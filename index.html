@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <title>PSS GAME</title>
+</head>
+<body>
+    
+    <div id="container">
+        
+        <h5>Paper,Scissor,Stone GAME</h5>
+        <div id="system" class="display">
+            <div id="system_value" class="display_style"></div>
+        </div>
+        <p>Vs</p>
+        <div id="player" class="display">
+            <div id="pap" onclick="paper()" class="display_style"></div>
+            <div id="sci" onclick="scissor()" class="display_style"></div>
+            <div id="sto" onclick="stone()" class="display_style"></div>
+        </div>
+        
+        <div id="result">
+            <div id="result_show">Choose!!</div>
+            <div id="control">
+                <input type="button" value="Exit" onclick="exit()" class="exit">
+                <input type="button" value="Again" onclick="again()" id="again">
+            </div>
+        </div>
+        
+    </div>
+        
+    <div id="exit">
+        <p class="p">Do you want to Exit?</p>
+        <div id="control">
+            <input type="button" value="Yes" id="yes" onclick="yes()">
+            <input type="button" value="No" id="no" onclick="no()">
+        </div>
+    </div>
+    
+</body>
+</html>
