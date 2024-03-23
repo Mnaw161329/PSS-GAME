@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drawing App</title>
+  <style>
+      :root {
+  --themeColor1: ghostwhite;
+  --themeColor2: #664aff;
+  --themeColor3: #041122;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  font-family: monospace;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  background: #141627;
+  background: linear-gradient(-45deg, #202040, #413c69);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+#canvas_div {
+  outline: none;
+  width: 95%;
+  height: 65%;
+  border-radius: 5px;
+  box-sizing: border-box;
+  /* margin: 0.5em; */
+  background: var(--themeColor3);
+  box-shadow: 0px 5px 40px 1px #041122;
+  overflow: hidden;
+}
+
+#clear {
+  width: 35%;
+  height: 40px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin: 0.5em;
+  display: grid;
+  place-items: center;
+  background: var(--themeColor3);
+  color: ghostwhite;
+  font-weight: 900;
+  font-size: 1.5em;
+  letter-spacing: 1px;
+}
+
+#stroke_width {
+  width: 85%;
+  height: 2px;
+}
+
+#stroke_color {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background: transparent;
+  width: 3.5em;
+  height: 3.5em;
+}
+
+#stroke_color::-webkit-color-swatch {
+  border: none;
+  border-radius: 5px;
+}
+
+.slider {
+  background: var(--themeColor3);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18em;
+  height: 3em;
+}
+
+.tools {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: wrap;
+}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="canvas_div">
+      <canvas id="canvas"></canvas>
+    </div>
+    <div class="tools">
+
+      <div id="clear">clear</div>
+      <input type="color" id="stroke_color" value="#BDC2FF">
+      <div class="slider">
+        <input type="range" id="stroke_width" min="0" max="100" value="1" step="1" oninput="draw_width = this.value">
+      </div>
+
+
+    </div>
+
+
+  </div>
+  <!-- Project -->
+  <script>
+      window.addEventListener('load', function() {
+
+
+  const canvas_div = document.getElementById('canvas_div');
+
+  const canvas = document.getElementById('canvas');
+  //console.log(canvas_div.getBoundingClientRect().width);
+  canvas.width = canvas_div.getBoundingClientRect().width;
+  canvas.height = canvas_div.getBoundingClientRect().height;
+
+
+
+
+  const context = canvas.getContext('2d');
+  let canvas_bg = 'transparent'
+  context.fillStyle = canvas_bg;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  let stroke_slider = document.getElementById('stroke_width');
+  let stroke_color = document.getElementById('stroke_color');
+
+  let is_drawing = false;
+
+
+
+
+  function start(event) {
+
+    is_drawing = true
+    context.beginPath();
+    context.moveTo(event.touches[0].clientX - canvas.offsetLeft, event.touches[0].clientY - canvas.offsetTop);
+    event.preventDefault();
+  }
+
+  function draw(event) {
+    // console.log(event.touches[0].clientY);
+    //console.log(event.touches[0].clientX - canvas.offsetLeft);
+    // console.log(event.touches[0].clientY - canvas.offsetTop);
+
+
+
+    if (is_drawing) {
+
+      context.lineTo(event.touches[0].clientX - canvas.offsetLeft, event.touches[0].clientY - canvas.offsetTop);
+      context.strokeStyle = stroke_color.value;
+      context.lineWidth = stroke_slider.value;
+      context.lineCap = 'round';
+      context.lineJoin = 'round';
+      context.stroke();
+    }
+    event.preventDefault();
+
+
+    // console.log(canvas.offsetLeft);
+  }
+
+  function stop(event) {
+
+    if (is_drawing) {
+      context.stroke();
+      context.closePath();
+      is_drawing = false
+    }
+    event.preventDefault();
+
+  }
+
+  function clear_canvas(arg) {
+    context.fillStyle = canvas_bg;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+  }
+
+
+  canvas.addEventListener('touchstart', start)
+  canvas.addEventListener('touchmove', draw)
+  canvas.addEventListener('touchend', stop)
+  document.getElementById('clear').addEventListener('click', clear_canvas);
+
+
+
+})
+  </script>
+</body>
+
+</html>
